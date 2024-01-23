@@ -1,14 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./dist/*.{html,js}"],
+  content: ["./*.html", "./dist/*.js"],
   theme: {
-    extend:
-    {
+    extend: {
       fontFamily: {
-        'nothingyoucoulddo': ['Nothing You Could Do', 'cursive'],
-        'signika': ['Signika', 'sans-serif'],
+        nothingyoucoulddo: ["Nothing You Could Do", "cursive"],
+        signika: ["Signika", "sans-serif"],
       },
     },
   },
   plugins: [],
-}
+};
