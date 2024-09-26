@@ -13,8 +13,6 @@
       defer
       src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
     ></script>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Signika:wght@400;700&display=swap"
       rel="stylesheet"
@@ -24,7 +22,7 @@
     class="dark:bg-black bg-white h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500"
   >
     <header class="flex w-full overflow-hidden pt-10 pb-1">
-      <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
+      <nav id="nav" class="w-full">
         <div
           class="container mx-auto flex flex-wrap items-center md:flex-no-wrap"
         >
@@ -35,10 +33,8 @@
           </div>
           <div class="ml-auto md:hidden flex items-center justify-start">
             <button
-              onclick="menuToggle()"
               @click="open = !open"
               class="tap-highlight-transparent text-black dark:text-white w-5 h-5 relative focus:outline-none"
-              @click="open = !open"
             >
               <span class="sr-only">Open main menu</span>
               <div
@@ -89,7 +85,7 @@
         </div>
       </nav>
     </header>
-    <div class="container mx-auto">
+    <main class="container mx-auto">
       <div class="grid grid-cols-2 gap-16">
         <section class="col-span-2 md:col-span-1">
           <div class="max-w-screen-md">
@@ -160,13 +156,14 @@
           >
             <img
               src="./assets/boopy.jpg"
-              alt=""
+              alt="It's me!"
               class="flex flex-col aspect-square w-full object-cover h-auto max-h-full"
             />
           </div>
         </div>
       </div>
-    </div>
+    </main>
+    <!-- Footer -->
     <footer>
       <div class="max-w-screen-xl py-16 mx-auto">
         <div class="grid grid-cols-1 gap-8 text-center mx-auto">
@@ -200,7 +197,7 @@
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <span class="sr-only">Instagram</span>
+                  <span class="sr-only"> Instagram</span>
                   <svg
                     class="w-6 h-6"
                     fill="currentColor"
@@ -236,41 +233,43 @@
         </div>
       </div>
     </footer>
-    <script src="fade_in.js"></script>
-    <script src="menu.js"></script>
     <script>
-      // Fetch API implementation for Formspree
+      // Script to handle form submission and alerts
       const form = document.getElementById("contact-form");
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        const formData = new FormData(form);
-        fetch("https://formspree.io/f/xwkgowlp", {
-          method: "POST",
-          body: formData,
-          headers: {
-            Accept: "application/json",
-          },
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const data = new FormData(form);
+        fetch(form.action, {
+          method: form.method,
+          body: data,
+          headers: { Accept: "application/json" },
         })
           .then((response) => {
             if (response.ok) {
-              alert("Thank you for your message! I will get back to you soon.");
+              Swal.fire({
+                icon: "success",
+                title: "Message sent!",
+                text: "Your message has been successfully sent.",
+              });
               form.reset();
             } else {
-              response.json().then((data) => {
-                if (Object.hasOwn(data, "errors")) {
-                  alert(
-                    data["errors"].map((error) => error["message"]).join(", ")
-                  );
-                } else {
-                  alert("Oops! There was a problem with your submission.");
-                }
+              Swal.fire({
+                icon: "error",
+                title: "Oops!",
+                text: "There was a problem sending your message. Please try again.",
               });
             }
           })
           .catch((error) => {
-            alert("Oops! There was a problem with your submission.");
+            Swal.fire({
+              icon: "error",
+              title: "Oops!",
+              text: "There was a problem sending your message. Please try again.",
+            });
           });
       });
     </script>
+    <script src="fade_in.js" defer></script>
+    <script src="menu.js" defer></script>
   </body>
 </html>
